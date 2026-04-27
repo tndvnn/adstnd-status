@@ -1,0 +1,113 @@
+# upptime config — deploy to GitHub repo tndvnn/adstnd-status
+# Monitors run via GitHub Actions cron. Free tier.
+# Public status page: https://status.ads.tnd.vn (CNAME → tndvnn.github.io)
+# Human task: set CNAME in Cloudflare DNS + enable GitHub Pages (see runbook).
+
+owner: tndvnn
+repo: adstnd-status
+
+sites:
+  # ── Core services (5 min interval) ──────────────────────────────────────────
+  - name: Admin App
+    url: https://app.ads.tnd.vn
+    maxRedirects: 5
+    interval: 5
+    expectedStatusCodes:
+      - 200
+      - 302
+    assignees:
+      - tndvnn
+
+  - name: API Healthz
+    url: https://api.ads.tnd.vn/healthz
+    interval: 5
+    expectedStatusCodes:
+      - 200
+      - 204
+    assignees:
+      - tndvnn
+
+  - name: MCP Server Healthz
+    url: https://mcp.ads.tnd.vn/healthz
+    interval: 5
+    expectedStatusCodes:
+      - 200
+      - 204
+    # NOTE: Will show red until Phase 05 (MCP server) is deployed — expected.
+    assignees:
+      - tndvnn
+
+  # ── Internal probes (1 min interval) ────────────────────────────────────────
+  - name: Postgres DB
+    url: https://app.ads.tnd.vn/api/internal/db-ping
+    interval: 1
+    method: GET
+    expectedStatusCodes:
+      - 200
+    headers:
+      - "X-Uptime-Secret: $UPTIME_PING_SECRET"
+    assignees:
+      - tndvnn
+
+  - name: Redis Cache
+    url: https://app.ads.tnd.vn/api/internal/redis-ping
+    interval: 1
+    method: GET
+    expectedStatusCodes:
+      - 200
+    headers:
+      - "X-Uptime-Secret: $UPTIME_PING_SECRET"
+    assignees:
+      - tndvnn
+
+  # ── External dependencies (10 min interval) ─────────────────────────────────
+  - name: Meta Graph API
+    url: https://graph.facebook.com
+    interval: 10
+    method: HEAD
+    expectedStatusCodes:
+      - 200
+      - 302
+      - 400
+    assignees:
+      - tndvnn
+
+  - name: Stripe API
+    url: https://api.stripe.com
+    interval: 10
+    method: HEAD
+    expectedStatusCodes:
+      - 200
+      - 301
+      - 302
+    assignees:
+      - tndvnn
+
+# Status website — public, no private flag.
+status-website:
+  cname: status.ads.tnd.vn
+  name: adstnd Status
+  logoUrl: https://app.ads.tnd.vn/favicon.ico
+  # i18n: upptime static site is English-only; Vietnamese not supported upstream.
+
+assignees:
+  - tndvnn
+
+notifications: []
+
+user-agent: "upptime/adstnd-status"
+
+commitMessages:
+  readmeContent: "docs: update status summary"
+  statusChange: "status: {name} is {status}"
+  graphsUpdate: "chore: update response time graphs"
+  commitAuthorName: "Upptime Bot"
+  commitAuthorEmail: "bot@upptime.js.org"
+
+workflowSchedule:
+  graphs: "0 0 * * *"
+  responseTime: "0 23 * * *"
+  staticSite: "0 1 * * *"
+  summary: "0 0 * * *"
+  updates: "0 3 * * *"
+  updateTemplate: "0 0 1 * *"

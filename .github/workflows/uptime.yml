@@ -1,0 +1,36 @@
+# uptime.yml — upptime GitHub Actions workflow for tndvnn/adstnd-status repo.
+#
+# This file lives in infra/upptime/ (monorepo) but must be copied/symlinked into
+# the adstnd-status repo's .github/workflows/ for GitHub Actions to pick it up.
+# Human task: copy this file to adstnd-status repo (see runbook).
+#
+# Secrets required in adstnd-status repo settings:
+#   GH_PAT            — Personal Access Token (repo + workflow scopes)
+#   UPTIME_PING_SECRET — shared secret for /api/internal/* probes
+
+name: Upptime
+
+on:
+  push:
+    branches:
+      - master
+  repository_dispatch:
+    types:
+      - trigger
+  schedule:
+    # Runs every 5 minutes — upptime uses its own interval logic per monitor.
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+jobs:
+  summary:
+    name: Summary
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: upptime/uptime-monitor@master
+        with:
+          UPPTIME_GH_TOKEN: ${{ secrets.GH_PAT }}
+          UPTIME_PING_SECRET: ${{ secrets.UPTIME_PING_SECRET }}
+        env:
+          UPTIME_PING_SECRET: ${{ secrets.UPTIME_PING_SECRET }}
