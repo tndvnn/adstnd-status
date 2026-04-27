@@ -1,5 +1,5 @@
-# uptime.yml — upptime GitHub Actions workflow for tndvnn/adstnd-status repo.
-# Secrets required: GH_PAT (repo+workflow scopes), UPTIME_PING_SECRET
+# Upptime monitor — runs all commands in a single job to avoid stale checkout issues.
+# Each step pulls latest before running so it sees commits from prior steps.
 
 name: Upptime
 on:
@@ -13,62 +13,59 @@ on:
 
 jobs:
   uptime:
-    name: Check status
+    name: Upptime pipeline
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
-      - uses: actions/checkout@v3
-      - uses: upptime/uptime-monitor@master
+      - uses: actions/checkout@v4
+
+      - name: Check status
+        continue-on-error: true
+        uses: upptime/uptime-monitor@master
         with:
           command: "update"
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
           UPTIME_PING_SECRET: ${{ secrets.UPTIME_PING_SECRET }}
 
-  response-time:
-    name: Response time check
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - uses: actions/checkout@v3
-      - uses: upptime/uptime-monitor@master
+      - name: Pull latest
+        run: git pull --rebase --autostash
+
+      - name: Response time check
+        continue-on-error: true
+        uses: upptime/uptime-monitor@master
         with:
           command: "response-time"
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
           UPTIME_PING_SECRET: ${{ secrets.UPTIME_PING_SECRET }}
 
-  readme:
-    name: README
-    runs-on: ubuntu-latest
-    needs: [uptime, response-time]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: upptime/uptime-monitor@master
+      - name: Pull latest
+        run: git pull --rebase --autostash
+
+      - name: README
+        continue-on-error: true
+        uses: upptime/uptime-monitor@master
         with:
           command: "readme"
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
 
-  graphs:
-    name: Graphs
-    runs-on: ubuntu-latest
-    needs: [response-time]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: upptime/uptime-monitor@master
+      - name: Pull latest
+        run: git pull --rebase --autostash
+
+      - name: Graphs
+        continue-on-error: true
+        uses: upptime/uptime-monitor@master
         with:
           command: "graphs"
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
 
-  static-site:
-    name: Status site
-    runs-on: ubuntu-latest
-    needs: [readme]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: upptime/uptime-monitor@master
+      - name: Pull latest
+        run: git pull --rebase --autostash
+
+      - name: Static site
+        uses: upptime/uptime-monitor@master
         with:
           command: "site"
         env:
