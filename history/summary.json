@@ -5,19 +5,17 @@
     "icon": "https://icons.duckduckgo.com/ip3/app.ads.tnd.vn.ico",
     "slug": "admin-app",
     "status": "down",
-    "uptime": "0.00%",
-    "uptimeDay": "0.00%",
-    "uptimeWeek": "0.00%",
-    "uptimeMonth": "0.00%",
-    "uptimeYear": "0.00%",
+    "uptime": "100.00%",
+    "uptimeDay": "100.00%",
+    "uptimeWeek": "100.00%",
+    "uptimeMonth": "100.00%",
+    "uptimeYear": "100.00%",
     "time": 0,
     "timeDay": 0,
     "timeWeek": 0,
     "timeMonth": 0,
     "timeYear": 0,
-    "dailyMinutesDown": {
-      "2026-04-27": 1584
-    }
+    "dailyMinutesDown": {}
   },
   {
     "name": "API Healthz",
@@ -36,7 +34,7 @@
     "timeMonth": 0,
     "timeYear": 0,
     "dailyMinutesDown": {
-      "2026-04-27": 1584
+      "2026-04-27": 1590
     }
   },
   {
@@ -56,7 +54,7 @@
     "timeMonth": 0,
     "timeYear": 0,
     "dailyMinutesDown": {
-      "2026-04-27": 1584
+      "2026-04-27": 1590
     }
   },
   {
@@ -76,7 +74,7 @@
     "timeMonth": 0,
     "timeYear": 0,
     "dailyMinutesDown": {
-      "2026-04-27": 1584
+      "2026-04-27": 1590
     }
   },
   {
@@ -96,7 +94,7 @@
     "timeMonth": 0,
     "timeYear": 0,
     "dailyMinutesDown": {
-      "2026-04-27": 1582
+      "2026-04-27": 1590
     }
   },
   {
@@ -116,7 +114,7 @@
     "timeMonth": 0,
     "timeYear": 0,
     "dailyMinutesDown": {
-      "2026-04-27": 1582
+      "2026-04-27": 1588
     }
   },
   {
@@ -136,7 +134,7 @@
     "timeMonth": 0,
     "timeYear": 0,
     "dailyMinutesDown": {
-      "2026-04-27": 1582
+      "2026-04-27": 1588
     }
   }
 ]
